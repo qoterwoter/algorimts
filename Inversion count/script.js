@@ -1,54 +1,52 @@
 const fs = require("fs");
-// Чтения файла
-function readingFile() {
-    let data = fs.readFileSync("input.txt", 'utf8').toString()
-    return data
-}
-// Перевод прочитанных данных из файла в массив цифр
-function toArray(data) {
-    data = data.split(' ').map(function(item) {
-        return parseInt(item, 10)
-    })
-    return data;
-}
-// Функция для полной перезаписи файла
-function reWriteFile(text) {
-    let data = fs.writeFileSync('output.txt', (text + " "))
-}
+const input = fs.readFileSync('input.txt', 'utf8');
+const data = input.replace(/\s/, ' ').split(' ').map(item => parseInt(item, 10));
 
-function mergeSort(arr) {
-    if (arr.length == 1)
-        return arr;
-    if (arr.length > 1) {
-        let breakpoint = Math.ceil((arr.length / 2));
-        let listL = arr.slice(0, breakpoint);
-        let listR = arr.slice(breakpoint, arr.length);
-        listL = mergeSort(listL);
-        listR = mergeSort(listR);
-        let a = merge(listL, listR);
-        return a;
-    }
-}
+// console.log(data);
 
-function merge(listL, listR) {
-    let result = [];
-    while (listL.length && listR.length) {
-        if (listL[0] <= listR[0]) {
-            result.push(listL.shift());
+const isValidElementsCount = data[0] === data.slice(1).length;
+
+function merge(arr, left, right) {
+    let i = 0;
+    let j = 0;
+    let count = 0;
+    console.log("Массив:",arr,'Left:',left,'Right:',right)
+    
+    while (i < left.length || j < right.length) {
+        if (i === left.length) {
+            arr[i+j] = right[j]; // arr[i + j], чтобы пропускать элемнты из левой части (i)
+            console.log('(i=left)',arr[i+j])
+            j++;
+        } else if (j === right.length) {
+            arr[i+j] = left[i];
+            console.log('(j===right) arr[i+j]:',arr[i+j],'j:',j,'i:',i,'r.len:',right.length)
+            i++;
+        } else if (left[i] <= right[j]) {
+            arr[i+j] = left[i];
+            console.log('(left[i]<=right[j]) arr[i+j]',arr[i+j],'j:',j,'i:',i,'r[j]:',right[j],'l[i]',left[i])
+            i++;                
         } else {
-            inversionCount += listL.length;
-            result.push(listR.shift());
+            arr[i+j] = right[j];
+            console.log('(else) arr[i+j]',arr[i+j],'j:',j,'r.len:',right.length)
+            count += left.length-i;
+            j++;
         }
     }
-    while (listL.length)
-        result.push(listL.shift());
-
-    while (listR.length)
-        result.push(listR.shift());
-    return result;
+    console.log('Количество инверсий:',count)
+    console.log('arr после слияния',arr,'\n')
+    return count;
 }
-let arr = toArray(readingFile())
-arr.shift();
-let inversionCount = 0;
-mergeSort(arr);
-reWriteFile(inversionCount)
+
+function invCount(arr) {
+    if (arr.length < 2)
+        return 0;
+    const m = (arr.length + 1) / 2;
+    const left = arr.slice(0, m);
+    const right = arr.slice(m, arr.length);
+
+    return invCount(left) + invCount(right) + merge(arr, left, right);
+}
+
+const count = isValidElementsCount ? invCount(data.slice(1)) : 0;
+
+fs.writeFileSync('output.txt', String(count));
