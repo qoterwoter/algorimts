@@ -49,9 +49,8 @@ const arrCreate = (P, N, Q, V) => {
     let A = [P];
     let lastGenerated = P;
     for (let i = 1; i < N; i++) {
-        lastGenerated = (lastGenerated * Q) % V 
+        lastGenerated = (lastGenerated * Q) % V;
         A[i] = lastGenerated;
-        // A = A.sort((a, b) => a - b);
     }
     return quickSort(A)
 };
@@ -62,8 +61,8 @@ let Q = data[0];
 let V = data[1];
 let P = data[2];
 let N = data[3];
-let K = data[4] -1;
+let K = data[4];
 
 A = arrCreate(P, N, Q, V);
 
-reWriteFile(A[K])
+reWriteFile(A[K - 1])
