@@ -2,36 +2,38 @@ let fs = require('fs')
 let data = fs.readFileSync('input.txt').toString().split('\n')
 fs.writeFileSync('output.json',('{\n\t"Быстрая сортировка":[\n'))
 
-var sortArray = function(nums) {
-	let len = nums.length;
-	if(len < 2) return nums;
+var sortArray = function(array) {
+	let len = array.length;
+	if(len < 2) return array;
 
-	quickSort(nums, 0, len-1)
-	return nums
+	quickSort(array, 0, len-1)
+	return array
 };
 
-var quickSort = function(nums, start, end){
+var quickSort = function(array, start, end){
 	if(start >= end) return
-	let left = start, right = end;
-	let pivot = nums[Math.floor((start+end) / 2)];
+	[left, right] = [start, end] 
+	let pivot = array[start];
+	// console.log('pivot',pivot)
 	while(left <= right) {
-		while(left <= right && nums[left] < pivot){
+		while(left <= right && array[left] < pivot){
+			// console.log('arr[l]',array[left])
 			left++
 		}
-		while(left <= right && nums[right] > pivot){
+		while(left <= right && array[right] > pivot){
+			// console.log('arr[r]',array[right])
 			right--
 		}
 		if(left <= right){
- 			[nums[left], nums[right]] = [nums[right],nums[left]]
+ 			[array[left], array[right]] = [array[right],array[left]]
 			left++
 			right--
 		}
 	}
-	quickSort(nums, start, right)
-	quickSort(nums, left, end)
+	quickSort(array, start, right)
+	quickSort(array, left, end)
 }
-
-for(let a = 0; a < 1; a++) {
+for(let a = 0; a < data.length-1; a++) {
     arr = data[a].split(', ').map((item)=>{
         return parseInt(item, 10)
     })
@@ -42,8 +44,7 @@ for(let a = 0; a < 1; a++) {
     if(a!==data.length-2) {
         fs.appendFileSync('output.json',(',\n'))
     } else {
-        fs.appendFileSync('output.json',('\n'))
+        fs.appendFileSync('output.json',(']\n'))
     }
 }
-fs.appendFileSync('output.json',(']}'))
-// fs.appendFileSync('output.txt',(arr.length+ " | " + end-start+'ms\n'))
+fs.appendFileSync('output.json',('}'))

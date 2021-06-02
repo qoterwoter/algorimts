@@ -19,7 +19,7 @@ function merge(arr, left, right) {
             j++;
         } else if (j === right.length) {
             arr[i+j] = left[i];
-            console.log('j===right:',arr[i+j],'j:',j,'i:',i,'r.len:',right.length)
+            console.log('(j===right) arr[i+j]:',arr[i+j],'j:',j,'i:',i,'r.len:',right.length)
             i++;
         } else if (left[i] <= right[j]) {
             arr[i+j] = left[i];
@@ -27,7 +27,7 @@ function merge(arr, left, right) {
             i++;                
         } else {
             arr[i+j] = right[j];
-            console.log('else:',arr[i+j],'j:',j,'r.len:',right.length)
+            console.log('(else) arr[i+j]',arr[i+j],'j:',j,'r.len:',right.length)
             count += left.length-i;
             j++;
         }

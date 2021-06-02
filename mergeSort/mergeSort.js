@@ -1,26 +1,28 @@
 let fs = require('fs')
 let data = fs.readFileSync('input.txt').toString().split('\n')
-fs.writeFileSync('output.txt',('Сортировка выбором:\n'))
-var sortArray = function(nums) {
-    let len = nums.length;
-    if(len < 2) return nums;
+fs.writeFileSync('output.txt',('Сортировка слиянием:\n'))
+let sortArray = function(array) {
+    let len = array.length;
+    if(len < 2) return array;
     const mid = Math.floor(len / 2);
-    const left = sortArray(nums.slice(0, mid));
-    const right = sortArray(nums.slice(mid, len));
+    const left = sortArray(array.slice(0, mid));
+    const right = sortArray(array.slice(mid, len));
     return merge(left, right);
 };
 
-function merge(left, right) {
+let merge = function(left, right) {
     let res = [];
-    console.log('left->',left,'right->', right)
     while(left.length && right.length) {
         res.push( (left[0] < right[0]) ? left.shift() : right.shift() );
     }
-    console.log('res',res.concat(left, right))
     return res.concat(left, right);
 }
-let start = new Date().getTime();
-let nums = sortArray([4,3,1,2,5]);
-console.log(nums)
-let end = new Date().getTime();
-fs.appendFileSync('output.txt',(`${nums.length}  |  ${end-start}ms\n`))
+for(let a = 0; a < data.length-1; a++) {
+    arr = data[a].split(', ').map((item)=>{
+        return parseInt(item, 10)
+    })
+    let start = new Date().getTime();
+    console.log(sortArray(arr))
+    let end = new Date().getTime();
+    fs.appendFileSync('output.txt',(`Длинна масива: ${arr.length},\nВремя выполнения: ${end-start}ms\n`))
+}

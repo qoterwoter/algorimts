@@ -10,14 +10,12 @@ for(let a = 0; a < data.length-1; a++) {
     for (let i = 0, last_i = arr.length - 1; i < last_i; i++) {
         for (let j = 0, last_j = last_i - i; j < last_j; j++) {
             if (arr[j] > arr[j + 1]) {
-                let switched = arr[j];
-                arr[j] = arr[j + 1];
-                arr[j + 1] = switched;
+                [arr[j],arr[j+1]] = [arr[j+1],arr[j]]
             }
         }
     }
     console.log(arr)
     let end = new Date().getTime();
     fs.appendFileSync('output.txt',(`${arr.length}  |  ${end-start}ms\n`))
-}ё
+}
 console.timeEnd('Время на выполнение');

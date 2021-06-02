@@ -1,46 +1,37 @@
 let fs = require('fs')
 let data = fs.readFileSync('input.txt').toString().split('\n')
-fs.writeFileSync('output.json',('{\n\t"Сортировка вставками": [\n'))
+fs.writeFileSync('output.txt',('Пирамидальная сортировка:'))
 
-var sortArray = function(nums) { 
-    if(nums.length < 2) return nums;
-    
-    let size = nums.length;
-    for(let i = Math.floor(size/2-1); i >= 0; i--) {
-        heap_sort(nums, i, size);
+let sortArray = function(array) { 
+    if(array.length < 2) return array;
+    let length = array.length;
+    for(let i = Math.floor(length/2-1); i >= 0; i--) {
+        heap_sort(array, i, length);
     }
-  
-    for(let j = size-1; j >= 0; j--) {
-        [nums[j], nums[0]] = [nums[0], nums[j]];
-        heap_sort(nums, 0, j);
+    for(let j = length-1; j >= 0; j--) {
+        [array[j], array[0]] = [array[0], array[j]];
+        heap_sort(array, 0, j);
     }
-    return nums;
+    return array;
 }
 
-var heap_sort = (nums, i, size) => {
-    let p = i;
-    let left = i * 2 + 1;
-	let right = left + 1;
-    if(left < size && nums[p] < nums[left]) p = left;
-    if(right < size && nums[p] < nums[right]) p = right;
-    
-    if(p > i) {
-        [nums[p], nums[i]] = [nums[i], nums[p]];
-        heap_sort(nums, p, size);
+let heap_sort = (array, i, length) => {
+    let biggest = i;
+    let left_child = i * 2 + 1;
+	let right_child = left_child + 1;
+    if(left_child < length && array[biggest] < array[left_child]) biggest = left_child;
+    if(right_child < length && array[biggest] < array[right_child]) biggest = right_child;
+    if(biggest > i) {
+        [array[biggest], array[i]] = [array[i], array[biggest]];
+        heap_sort(array, biggest, length);
     }
 }
+
 for (let i = 0; i < data.length-1;i++) {
     let start = new Date().getTime();
     let arr = data[i].split(', ').map(item=>parseInt(item))
     arr = sortArray(arr)
     console.log(arr)
     let end = new Date().getTime();
-    fs.appendFileSync('output.json',(`\t{\n\t\t"Длинна масива": ${arr.length},\n\t\t"Время выполнения": "${end-start}ms"\n\t}`));
-    if(i!==data.length-2) {
-        fs.appendFileSync('output.json',(',\n'))
-    } else { 
-        fs.appendFileSync('output.json',('\n'))
-    }
+    fs.appendFileSync('output.txt',(`\nДлинна масива: ${arr.length},\nВремя выполнения: ${end-start}ms`));
 }
-fs.appendFileSync('output.json',(']}'))
-sortArray([4,2,1,3,5,6,7])

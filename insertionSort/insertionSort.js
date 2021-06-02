@@ -17,9 +17,15 @@ for(let a = 0; a < data.length-1; a++) {
     //     arr[j + 1] = v;
     // }
     for (let i = 1;i < arr.length; i++) {
-        for (let j = i; j <arr.length-i; j++) {
+        let key = arr[i]
+        j = i - 1;
+        while(j>=0&&arr[j]>key) {
+            arr[j+1] = arr[j];
+            j--;
         }
+        arr[j+1] = key
     }
+    console.log(arr)
     let end = new Date().getTime();
     // fs.appendFileSync('output.txt',(arr.length+ " | " + end-start+'ms\n'))
     // fs.appendFileSync('output.txt',(`${arr.length}  |  ${end-start}ms\n`))
