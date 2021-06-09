@@ -14,14 +14,11 @@ var quickSort = function(array, start, end){
 	if(start >= end) return
 	[left, right] = [start, end] 
 	let pivot = array[start];
-	// console.log('pivot',pivot)
 	while(left <= right) {
 		while(left <= right && array[left] < pivot){
-			// console.log('arr[l]',array[left])
 			left++
 		}
 		while(left <= right && array[right] > pivot){
-			// console.log('arr[r]',array[right])
 			right--
 		}
 		if(left <= right){
@@ -33,7 +30,7 @@ var quickSort = function(array, start, end){
 	quickSort(array, start, right)
 	quickSort(array, left, end)
 }
-for(let a = 0; a < data.length-1; a++) {
+for(let a = 0; a < data.length-5; a++) {
     arr = data[a].split(', ').map((item)=>{
         return parseInt(item, 10)
     })

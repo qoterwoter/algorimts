@@ -12,7 +12,7 @@ function merge(arr, left, right) {
     let count = 0;
     while (i < left.length || j < right.length) {
         if (i === left.length) {
-            arr[i+j] = right[j]; // arr[i + j], чтобы пропускать элемнты из левой части (i)
+            arr[i+j] = right[j];
             j++;
         } else if (j === right.length) {
             arr[i+j] = left[i];
